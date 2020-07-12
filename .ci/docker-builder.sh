@@ -32,7 +32,7 @@ DOCKER_BUILDKIT=1 docker buildx build --platform "linux/amd64,linux/arm64" \
   --load \
   --progress=plain \
   -t "$appName" \
-  --file "deployments/$appName/Dockerfile" \
+  --file "Dockerfile" \
   --build-arg "VERSION=${VERSION}" \
   .
 

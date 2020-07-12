@@ -19,8 +19,10 @@ jobs:
             v1-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
             v1-${{ runner.os }}-go-
       - name: Download Dependencies
+        working-directory: api
         run: make dep
       - name: Run Tests
+        working-directory: api
         run: make test
 
   build:
