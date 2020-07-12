@@ -22,7 +22,7 @@ if [[ -n $GITHUB_WORKFLOW ]]; then
 fi
 
 appName="$(basename "$(pwd)")"
-VERSION="v1.0.0-$COMMIT_SHA"
+VERSION="$(make version)"
 remote_image_name="docker.io/tritonmedia/$appName"
 
 if [[ -z $IMAGE_PUSH_SECRET ]]; then
@@ -52,7 +52,7 @@ if [[ $COMMIT_BRANCH == "master" ]]; then
   TAGS+=("$VERSION" "latest")
 else
   # strip the branch name of invalid spec characters
-  TAGS+=("$VERSION-branch.${COMMIT_BRANCH//[^a-zA-Z\-\.]/-}")
+  TAGS+=("$VERSION-$COMMIT_SHA-branch.${COMMIT_BRANCH//[^a-zA-Z\-\.]/-}")
 fi
 
 for tag in "${TAGS[@]}"; do
@@ -67,5 +67,5 @@ for tag in "${TAGS[@]}"; do
     --file "Dockerfile" \
     --push \
     --build-arg "VERSION=${VERSION}" \
-    .
+    . >/dev/null
 done
