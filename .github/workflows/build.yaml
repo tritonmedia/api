@@ -5,7 +5,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: cimg/go:1.14
+      image: golang:1.14
     steps:
       - name: Checkout
         uses: actions/checkout@v2

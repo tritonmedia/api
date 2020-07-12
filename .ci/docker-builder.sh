@@ -5,7 +5,7 @@ set -e
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 # shellcheck source=../scripts/lib/logging.sh
-source "$DIR/scripts/lib/logging.sh"
+source "$DIR/../scripts/lib/logging.sh"
 
 if [[ -z $CI ]]; then
   error "not running in CI"
