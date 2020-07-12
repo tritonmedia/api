@@ -22,7 +22,7 @@ default: build
 
 .PHONY: version
 version:
-	@echo "$(APP_VERSION)"
+	@echo $(APP_VERSION)
 
 .PHONY: release
 release:
