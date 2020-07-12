@@ -19,10 +19,10 @@ jobs:
             v1-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
             v1-${{ runner.os }}-go-
       - name: Download Dependencies
-        working-directory: api
-        run: make dep
+        working-directory: ${GITHUB_WORKSPACE}
+        run: ls -alh && make dep
       - name: Run Tests
-        working-directory: api
+        working-directory: ${GITHUB_WORKSPACE}
         run: make test
 
   build:
