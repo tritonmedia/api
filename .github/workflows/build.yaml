@@ -40,4 +40,6 @@ jobs:
             v1-${{ runner.os }}-buildx-${{ hashFiles('**/Dockerfile') }}
             v1-${{ runner.os }}-buildx-
       - name: Build and Push Docker Container
+        env:
+          IMAGE_PUSH_SECRET: ${{ secrets.DOCKER_IMAGE_PUSH }}
         run: .ci/docker-builder.sh

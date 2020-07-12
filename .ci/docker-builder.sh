@@ -25,6 +25,11 @@ appName="$(basename "$(pwd)")"
 VERSION="v1.0.0-$COMMIT_SHA"
 remote_image_name="docker.io/tritonmedia/$appName"
 
+info "setting up docker authn"
+docker login \
+  -u jaredallard \
+  --password-stdin <<<"${IMAGE_PUSH_SECRET}"
+
 info "building docker image"
 docker buildx build --platform "linux/amd64,linux/arm64" \
   --cache-to "type=local,dest=/tmp/.buildx-cache" \
