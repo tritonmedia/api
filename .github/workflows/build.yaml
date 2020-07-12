@@ -20,7 +20,7 @@ jobs:
             v1-${{ runner.os }}-go-
       - name: Download Dependencies
         # TODO(jaredallard): make a base image with these deps.
-        run: apk add --no-cache make bash && make dep
+        run: apk add --no-cache make bash curl tar && make dep
       - name: Run Tests
         run: make test
 
