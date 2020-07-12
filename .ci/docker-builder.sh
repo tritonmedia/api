@@ -23,22 +23,21 @@ fi
 
 appName="$(basename "$(pwd)")"
 VERSION="v1.0.0-$COMMIT_SHA"
-remote_image_name="tritonmedia/$appName"
+remote_image_name="docker.io/tritonmedia/$appName"
 
 info "building docker image"
-DOCKER_BUILDKIT=1 docker buildx build --platform "linux/amd64,linux/arm64" \
+docker buildx build --platform "linux/amd64,linux/arm64" \
   --cache-to "type=local,dest=/tmp/.buildx-cache" \
   --cache-from "type=local,src=/tmp/.buildx-cache" \
-  --load \
   -t "$appName" \
   --file "Dockerfile" \
   --build-arg "VERSION=${VERSION}" \
   .
 
 # tag images as a PR if they are a PR
-declare -a TAGS
+TAGS=()
 if [[ $COMMIT_BRANCH == "master" ]]; then
-  TAGS+=("$VERSION" "$COMMIT_SHA" "latest")
+  TAGS+=("$VERSION" "latest")
 else
   # strip the branch name of invalid spec characters
   TAGS+=("$VERSION-branch.${COMMIT_BRANCH//[^a-zA-Z\-\.]/-}")
@@ -50,6 +49,11 @@ for tag in "${TAGS[@]}"; do
   fqin="$remote_image_name:$(cut -c 1-127 <<<"$tag")"
 
   info "pushing image '$fqin'"
-  docker tag "$appName" "$fqin"
-  docker push "$fqin"
+  docker buildx build --platform "linux/amd64,linux/arm64" \
+    --cache-from "type=local,src=/tmp/.buildx-cache" \
+    -t "$fqin" \
+    --file "Dockerfile" \
+    --push \
+    --build-arg "VERSION=${VERSION}" \
+    .
 done
