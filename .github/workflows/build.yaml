@@ -9,14 +9,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache Docker layers
+      - name: Cache Go Dependencies
         uses: actions/cache@v2
         id: go-dep-cache
         with:
           path: /home/worker/go/pkg
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          key: v1-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            v1-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+            v1-${{ runner.os }}-go-
 
   build:
     runs-on: ubuntu-latest
@@ -30,8 +31,9 @@ jobs:
         id: buildx-cache
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          key: v1-${{ runner.os }}-buildx-${{ hashFiles('**/Dockerfile') }}
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            v1-${{ runner.os }}-buildx-${{ hashFiles('**/Dockerfile') }}
+            v1-${{ runner.os }}-buildx-
       - name: Build and Push Docker Container
         run: .ci/docker-builder.sh

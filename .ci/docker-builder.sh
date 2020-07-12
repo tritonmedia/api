@@ -26,7 +26,7 @@ VERSION="v1.0.0-$COMMIT_SHA"
 remote_image_name="tritonmedia/$appName"
 
 info "building docker image"
-DOCKER_BUILDKIT=1 docker buildx build --platform "linux/{amd64,arm64}" \
+DOCKER_BUILDKIT=1 docker buildx build --platform "linux/amd64,linux/arm64" \
   --cache-to "type=local,dest=/tmp/.buildx-cache" \
   --cache-from "type=local,src=/tmp/.buildx-cache" \
   --load \
