@@ -21,7 +21,7 @@ if [[ -n $GITHUB_WORKFLOW ]]; then
   COMMIT_BRANCH="${GITHUB_REF//refs\/heads\//}"
 fi
 
-appName="$(basename "$(git remote get-url origin) | sed 's/\.git$//'")"
+appName="$(basename "$(pwd)")"
 VERSION="v1.0.0-$COMMIT_SHA"
 remote_image_name="tritonmedia/$appName"
 
