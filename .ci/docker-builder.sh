@@ -30,7 +30,6 @@ DOCKER_BUILDKIT=1 docker buildx build --platform "linux/amd64,linux/arm64" \
   --cache-to "type=local,dest=/tmp/.buildx-cache" \
   --cache-from "type=local,src=/tmp/.buildx-cache" \
   --load \
-  --progress=plain \
   -t "$appName" \
   --file "Dockerfile" \
   --build-arg "VERSION=${VERSION}" \
