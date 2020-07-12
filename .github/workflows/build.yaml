@@ -19,10 +19,8 @@ jobs:
             v1-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
             v1-${{ runner.os }}-go-
       - name: Download Dependencies
-        working-directory: ../
         run: ls -alh && make dep
       - name: Run Tests
-        working-directory: ../
         run: make test
 
   build:
