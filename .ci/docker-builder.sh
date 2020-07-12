@@ -25,6 +25,13 @@ appName="$(basename "$(pwd)")"
 VERSION="v1.0.0-$COMMIT_SHA"
 remote_image_name="docker.io/tritonmedia/$appName"
 
+if [[ -z $IMAGE_PUSH_SECRET ]]; then
+  # Why: We're literally having it be escaped.
+  # shellcheck disable=SC2016
+  error 'Missing $IMAGE_PUSH_SECRET'
+  exit 1
+fi
+
 info "setting up docker authn"
 docker login \
   -u jaredallard \
