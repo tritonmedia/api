@@ -12,7 +12,7 @@ jobs:
       image: golang:1.15-alpine
     steps:
       - name: Download OS Dependencies
-        run: apk add --no-cache git make bash curl
+        run: apk add --no-cache git make bash curl tar gcc
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache Go Dependencies
