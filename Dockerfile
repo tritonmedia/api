@@ -3,7 +3,7 @@ FROM golang:1.15-alpine as builder
 ARG VERSION
 WORKDIR /src
 
-RUN apk add --no-cache make bash
+RUN apk add --no-cache make bash git
 
 # Add go.mod and go.sum first to maximize caching
 COPY ./go.mod ./go.sum ./

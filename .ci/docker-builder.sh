@@ -18,7 +18,7 @@ COMMIT_BRANCH="$CIRCLE_BRANCH"
 # Support Github Actions
 if [[ -n $GITHUB_WORKFLOW ]]; then
   COMMIT_SHA="$GITHUB_SHA"
-  COMMIT_BRANCH="${GITHUB_REF//refs\/heads\//}"
+  COMMIT_BRANCH="${GITHUB_HEAD_REF//refs\/heads\//}"
 fi
 
 appName="$(basename "$(pwd)")"

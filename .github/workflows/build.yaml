@@ -9,7 +9,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: golang:1.14
+      image: golang:1.15-alpine
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,7 +23,9 @@ jobs:
             v1-${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
             v1-${{ runner.os }}-go-
       - name: Download Dependencies
-        run: make dep
+        run: |-
+          apk add --no-cache git
+          make dep
       - name: Run Tests
         run: make test
 
@@ -54,5 +56,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          msg: "Preview image is available as: ${{ env.PREVIEW_IMAGE }}"
+          msg: "Preview image is available as: `${{ env.PREVIEW_IMAGE }}`"
           check_for_duplicate_msg: true
