@@ -1,5 +1,9 @@
 name: CI
-on: "push"
+on:
+  pull_request: {}
+  push:
+    branches:
+      - master
 
 jobs:
   test:
@@ -44,7 +48,7 @@ jobs:
         env:
           IMAGE_PUSH_SECRET: ${{ secrets.DOCKER_IMAGE_PUSH }}
         run: .ci/docker-builder.sh
-      - name: Notify of Version Change
+      - name: Notify of Preview Image
         if: github.event_name == 'pull_request' && env.PREVIEW_IMAGE != ''
         uses: unsplash/comment-on-pr@master
         env:
