@@ -44,3 +44,11 @@ jobs:
         env:
           IMAGE_PUSH_SECRET: ${{ secrets.DOCKER_IMAGE_PUSH }}
         run: .ci/docker-builder.sh
+      - name: Notify of Version Change
+        if: github.event_name == 'pull_request' && env.PREVIEW_IMAGE != ''
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: "Preview image is available as: ${{ env.PREVIEW_IMAGE }}"
+          check_for_duplicate_msg: true
