@@ -1,5 +1,8 @@
 {
   "go.lintTool": "golangci-lint",
+  "go.lintFlags": [
+    "--fast",
+  ],
   "go.alternateTools": {
     "golangci-lint": "${workspaceFolder}/scripts/golangci-lint.sh",
   },
@@ -8,5 +11,11 @@
     "SCRIPTDIR",
     "-x"
   ],
-  "shellformat.flag": "-s"
+  "shellformat.path": "./scripts/shfmt.sh",
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  }
 }
