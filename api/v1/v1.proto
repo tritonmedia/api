@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package api.v1;
+option go_package = "github.com/tritonmedia/api/api/api";
+
+enum MediaType {
+  MediaTypeUnset = 0;
+  Movie = 1;
+  Television = 2;
+  Music = 3;
+}
+
+message Media {
+  string id = 1;
+  string title = 2;
+  MediaType type = 3;
+}
+
+message GetMediaRequest {
+  string id = 1;
+}
+
+message CreateMediaRequest {
+  Media media = 1;
+}
+
+
+service API {
+  rpc GetMedia(GetMediaRequest) returns (Media);
+  rpc CreateMedia(CreateMediaRequest) returns (Media);
+}

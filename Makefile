@@ -14,7 +14,7 @@ BINDIR         := $(CURDIR)/bin
 PKGDIR         := github.com/tritonmedia/api
 CGO_ENABLED    := 1
 BENCH_FLAGS    := "-bench=Bench $(BENCH_FLAGS)"
-TEST_TAGS      ?= tm_teste
+TEST_TAGS      ?= tm_test
 LOG            := "$(CURDIR)/scripts/make-log-wrapper.sh"
 
 .PHONY: default
@@ -24,16 +24,11 @@ default: build
 version:
 	@echo $(APP_VERSION)
 
-.PHONY: release
-release:
-	@$(LOG) info "Building official release"
-	./scripts/gobin.sh github.com/goreleaser/goreleaser
-
 .PHONY: pre-commit
 pre-commit: fmt
 
 .PHONY: build
-build: gogenerate gobuild
+build: gobuild
 
 .PHONY: test
 test:
