@@ -12,12 +12,10 @@ if [[ -z $CI ]]; then
   exit 1
 fi
 
-COMMIT_SHA="$CIRCLE_SHA1"
 COMMIT_BRANCH="$CIRCLE_BRANCH"
 
 # Support Github Actions
 if [[ -n $GITHUB_WORKFLOW ]]; then
-  COMMIT_SHA="$GITHUB_SHA"
   COMMIT_BRANCH="${GITHUB_HEAD_REF//refs\/heads\//}"
 fi
 

@@ -1,11 +1,12 @@
 {
   "go.lintTool": "golangci-lint",
-  "go.lintFlags": [
-    "--fast",
-  ],
+  "go.alternateTools": {
+    "golangci-lint": "${workspaceFolder}/scripts/golangci-lint.sh",
+  },
   "shellcheck.customArgs": [
     "-P",
     "SCRIPTDIR",
     "-x"
-  ]
+  ],
+  "shellformat.flag": "-s"
 }
