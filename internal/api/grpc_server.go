@@ -9,12 +9,13 @@ import (
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	apiv1 "github.com/tritonmedia/api/api/v1"
-	"github.com/tritonmedia/api/internal/ent"
 
 	// used by ent
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/stdlib"
+
+	apiv1 "github.com/tritonmedia/api/api/v1"
+	"github.com/tritonmedia/api/internal/ent"
 )
 
 type GRPCServiceHandler struct {

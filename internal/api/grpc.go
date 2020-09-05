@@ -7,9 +7,10 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	apiv1 "github.com/tritonmedia/api/api/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+
+	apiv1 "github.com/tritonmedia/api/api/v1"
 )
 
 type GRPCService struct {
