@@ -10,6 +10,8 @@ import (
 	"github.com/tritonmedia/pkg/app"
 	"github.com/tritonmedia/pkg/service"
 	"github.com/urfave/cli/v2"
+
+	"github.com/tritonmedia/api/internal/api"
 )
 
 func main() {
@@ -24,7 +26,7 @@ func main() {
 	}
 	app.Action = func(c *cli.Context) error {
 		r := service.NewServiceRunner(ctx, []service.Service{
-			//
+			api.NewGRPCService(),
 		})
 		sigC := make(chan os.Signal)
 
