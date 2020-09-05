@@ -22,6 +22,7 @@ linters-settings:
       - octalLiteral
       - whyNoLint
       - wrapperFunc
+      - commentFormatting # Breaks bootstraper
   gocyclo:
     min-complexity: 15
   goimports:
