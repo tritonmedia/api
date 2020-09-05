@@ -5,6 +5,7 @@ services:
     ports:
       - 4222:4222
       - 8222:8222
+  ###StartBlock(deps)
   postgres:
     image: postgres:12-alpine
     environment:
@@ -13,3 +14,4 @@ services:
       POSTGRES_PASSWORD: yeAUemR82sK82jcNjR0E8BqYejUUYtLM
     ports:
       - 5432:5432
+  ###EndBlock(deps)

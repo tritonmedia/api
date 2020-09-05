@@ -4,26 +4,31 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/facebook/ent/dialect"
-	entsql "github.com/facebook/ent/dialect/sql"
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 
-	// used by ent
-	"github.com/jackc/pgx/v4"
-	"github.com/jackc/pgx/v4/stdlib"
-
 	apiv1 "github.com/tritonmedia/api/api/v1"
 	"github.com/tritonmedia/api/internal/ent"
+
+	///StartBlock(imports)
+	// goimports is fucking up these imports.
+	"github.com/facebook/ent/dialect"
+	entsql "github.com/facebook/ent/dialect/sql"
+	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/stdlib"
+	///EndBlock(imports)
 )
 
 type GRPCServiceHandler struct {
 	log logrus.FieldLogger
 
+	///StartBlock(grpcConfig)
 	db *ent.Client
+	///EndBlock(grpcConfig)
 }
 
+///StartBlock(global)
 // dbMediaToProto converts a media database object to
 // it's protobuf representation
 func dbMediaToProto(m *ent.Media) *apiv1.Media {
@@ -40,7 +45,10 @@ func dbMediaToProto(m *ent.Media) *apiv1.Media {
 	}
 }
 
+///EndBlock(global)
+
 func NewServiceHandler(ctx context.Context, log logrus.FieldLogger) (*GRPCServiceHandler, error) {
+	///StartBlock(grpcInit)
 	conf, err := pgx.ParseConfig("postgres://api:yeAUemR82sK82jcNjR0E8BqYejUUYtLM@127.0.0.1:5432/triton")
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to build database config")
@@ -53,13 +61,17 @@ func NewServiceHandler(ctx context.Context, log logrus.FieldLogger) (*GRPCServic
 	if err := db.Schema.Create(ctx); err != nil {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
+	///EndBlock(grpcInit)
 
 	return &GRPCServiceHandler{
 		log,
+		///StartBlock(grpcConfigInit)
 		db,
+		///EndBlock(grpcConfigInit)
 	}, nil
 }
 
+///StartBlock(grpcHandlers)
 // CreateMedia creates a new media object and sends it off for processing
 func (h *GRPCServiceHandler) CreateMedia(ctx context.Context, r *apiv1.CreateMediaRequest) (*apiv1.Media, error) {
 	if r.Media.Status != nil {
@@ -110,3 +122,5 @@ func (h *GRPCServiceHandler) GetMedia(ctx context.Context, r *apiv1.GetMediaRequ
 
 	return dbMediaToProto(m), nil
 }
+
+///EndBlock(grpcHandlers)
