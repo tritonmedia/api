@@ -5,15 +5,41 @@ option go_package = "github.com/tritonmedia/api/api/api";
 
 enum MediaType {
   MediaTypeUnset = 0;
-  Movie = 1;
-  Television = 2;
-  Music = 3;
+  MediaTypeMovie = 1;
+  MediaTypeTelevision = 2;
+  MediaTypeMusic = 3;
+}
+
+enum MediaSource {
+  MediaSourceUnset = 0;
+  MediaSourceHTTP = 1;
+  MediaSourceTorrent = 2;
+  MediaSourceFile = 3;
+}
+
+enum MediaStatusStage {
+  MediaStatusStageUnset = 0;
+  MediaStatusStageDownloadQueued = 1;
+  MediaStatusStageDownloading = 2;
+  MediaStatusStageConversionQueued = 3;
+  MediaStatusStageConverting = 4;
+  MediaStatusStageConverted = 5;
+  MediaStatusStageUploading = 6;
+  MediaStatusStageDeployed = 7;
+}
+
+message MediaStatus {
+  MediaStatusStage status = 1;
+  float percent = 2;
 }
 
 message Media {
   string id = 1;
   string title = 2;
   MediaType type = 3;
+  MediaSource source = 4;
+  string sourceURI = 5;
+  MediaStatus status = 6;
 }
 
 message GetMediaRequest {
@@ -23,7 +49,6 @@ message GetMediaRequest {
 message CreateMediaRequest {
   Media media = 1;
 }
-
 
 service API {
   rpc GetMedia(GetMediaRequest) returns (Media);

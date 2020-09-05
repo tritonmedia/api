@@ -7,6 +7,7 @@ import (
 	"syscall"
 
 	"github.com/sirupsen/logrus"
+	"github.com/tritonmedia/api/internal/api"
 	"github.com/tritonmedia/pkg/app"
 	"github.com/tritonmedia/pkg/service"
 	"github.com/urfave/cli/v2"
@@ -24,7 +25,7 @@ func main() {
 	}
 	app.Action = func(c *cli.Context) error {
 		r := service.NewServiceRunner(ctx, []service.Service{
-			//
+			api.NewGRPCService(),
 		})
 		sigC := make(chan os.Signal)
 
