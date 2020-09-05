@@ -18,6 +18,7 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	log := logrus.New().WithContext(ctx)
 
+	//nolint:gocritic
 	app := cli.App{
 		Name:    "api",
 		Version: app.Version,
