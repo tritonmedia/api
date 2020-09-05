@@ -7,10 +7,11 @@ import (
 	"syscall"
 
 	"github.com/sirupsen/logrus"
-	"github.com/tritonmedia/api/internal/api"
 	"github.com/tritonmedia/pkg/app"
 	"github.com/tritonmedia/pkg/service"
 	"github.com/urfave/cli/v2"
+
+	"github.com/tritonmedia/api/internal/api"
 )
 
 func main() {
