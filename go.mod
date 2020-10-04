@@ -1,6 +1,6 @@
 module github.com/tritonmedia/api
 
-go 1.14
+go 1.15
 
 require (
 	github.com/facebook/ent v0.4.3
