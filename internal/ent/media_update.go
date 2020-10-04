@@ -322,11 +322,11 @@ func (muo *MediaUpdateOne) Save(ctx context.Context) (*Media, error) {
 
 // SaveX is like Save, but panics if an error occurs.
 func (muo *MediaUpdateOne) SaveX(ctx context.Context) *Media {
-	m, err := muo.Save(ctx)
+	node, err := muo.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
-	return m
+	return node
 }
 
 // Exec executes the query on the entity.
@@ -342,7 +342,7 @@ func (muo *MediaUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-func (muo *MediaUpdateOne) sqlSave(ctx context.Context) (m *Media, err error) {
+func (muo *MediaUpdateOne) sqlSave(ctx context.Context) (_node *Media, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   media.Table,
@@ -407,9 +407,9 @@ func (muo *MediaUpdateOne) sqlSave(ctx context.Context) (m *Media, err error) {
 			Column: media.FieldStatusPercent,
 		})
 	}
-	m = &Media{config: muo.config}
-	_spec.Assign = m.assignValues
-	_spec.ScanValues = m.scanValues()
+	_node = &Media{config: muo.config}
+	_spec.Assign = _node.assignValues
+	_spec.ScanValues = _node.scanValues()
 	if err = sqlgraph.UpdateNode(ctx, muo.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{media.Label}
@@ -418,5 +418,5 @@ func (muo *MediaUpdateOne) sqlSave(ctx context.Context) (m *Media, err error) {
 		}
 		return nil, err
 	}
-	return m, nil
+	return _node, nil
 }

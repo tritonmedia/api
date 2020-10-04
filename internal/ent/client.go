@@ -193,11 +193,11 @@ func (c *MediaClient) Get(ctx context.Context, id uuid.UUID) (*Media, error) {
 
 // GetX is like Get, but panics if an error occurs.
 func (c *MediaClient) GetX(ctx context.Context, id uuid.UUID) *Media {
-	m, err := c.Get(ctx, id)
+	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
-	return m
+	return obj
 }
 
 // Hooks returns the client hooks.
