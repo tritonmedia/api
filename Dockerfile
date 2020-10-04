@@ -1,4 +1,3 @@
-
 # syntax=docker/dockerfile:1.0-experimental
 FROM golang:1.15-alpine as builder
 ARG VERSION
