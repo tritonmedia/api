@@ -3,13 +3,18 @@ package api
 import (
 	"context"
 	"fmt"
+	"os"
+	"regexp"
 
 	"github.com/google/uuid"
+	"github.com/nats-io/stan.go"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/protobuf/proto"
 
 	apiv1 "github.com/tritonmedia/api/api/v1"
 	"github.com/tritonmedia/api/internal/ent"
+	"github.com/tritonmedia/pkg/discovery"
 
 	///StartBlock(imports)
 	// goimports is fucking up these imports.
@@ -20,11 +25,14 @@ import (
 	///EndBlock(imports)
 )
 
+var nonAlphaNumRegex = regexp.MustCompile("[^a-zA-Z0-9]+")
+
 type GRPCServiceHandler struct {
 	log logrus.FieldLogger
 
 	///StartBlock(grpcConfig)
 	db *ent.Client
+	sc stan.Conn
 	///EndBlock(grpcConfig)
 }
 
@@ -49,6 +57,10 @@ func dbMediaToProto(m *ent.Media) *apiv1.Media {
 
 func NewServiceHandler(ctx context.Context, log logrus.FieldLogger) (*GRPCServiceHandler, error) {
 	///StartBlock(grpcInit)
+	// TODO(jaredallard): we could make this easier to work with...
+	log = log.WithField("service", "*api.GRPCServiceHandler")
+
+	// TODO(jaredallard): when we add configuration, we need to change this
 	conf, err := pgx.ParseConfig("postgres://api:yeAUemR82sK82jcNjR0E8BqYejUUYtLM@127.0.0.1:5432/triton")
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to build database config")
@@ -58,8 +70,27 @@ func NewServiceHandler(ctx context.Context, log logrus.FieldLogger) (*GRPCServic
 	db := ent.NewClient(ent.Driver(entsql.OpenDB(dialect.Postgres, sdb)))
 
 	log.Info("running database migrations")
+
+	//nolint:govet
 	if err := db.Schema.Create(ctx); err != nil {
-		log.Fatalf("failed creating schema resources: %v", err)
+		return nil, err
+	}
+
+	endpoint, err := discovery.Find("nats")
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to find nats")
+	}
+
+	hostname, err := os.Hostname()
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get hostname")
+	}
+	clientID := nonAlphaNumRegex.ReplaceAllString(hostname, "-")
+
+	// TODO(jaredallard): handle connection loss
+	sc, err := stan.Connect("test-cluster", clientID, stan.NatsURL(endpoint))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create nats client")
 	}
 	///EndBlock(grpcInit)
 
@@ -67,6 +98,7 @@ func NewServiceHandler(ctx context.Context, log logrus.FieldLogger) (*GRPCServic
 		log,
 		///StartBlock(grpcConfigInit)
 		db,
+		sc,
 		///EndBlock(grpcConfigInit)
 	}, nil
 }
@@ -94,6 +126,8 @@ func (h *GRPCServiceHandler) CreateMedia(ctx context.Context, r *apiv1.CreateMed
 		return nil, fmt.Errorf("missing type")
 	}
 
+	h.log.WithField("media", r.Media).Info("creating media")
+
 	m, err := h.db.Media.Create().SetTitle(r.Media.Title).
 		SetSource(r.Media.Source.String()).SetSourceURI(r.Media.SourceURI).
 		SetType(r.Media.Type.String()).Save(ctx)
@@ -101,7 +135,16 @@ func (h *GRPCServiceHandler) CreateMedia(ctx context.Context, r *apiv1.CreateMed
 		return nil, err
 	}
 
-	return dbMediaToProto(m), nil
+	p := dbMediaToProto(m)
+	b, err := proto.Marshal(p)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to marshal into protobuf format")
+	}
+	if err := h.sc.Publish("v1.convert", b); err != nil {
+		return nil, errors.Wrap(err, "failed to publish message")
+	}
+
+	return p, nil
 }
 
 // GetMedia gets a media using specific filters

@@ -24,6 +24,13 @@ var (
 		Columns:     MediaColumns,
 		PrimaryKey:  []*schema.Column{MediaColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{},
+		Indexes: []*schema.Index{
+			{
+				Name:    "media_source_source_uri",
+				Unique:  true,
+				Columns: []*schema.Column{MediaColumns[3], MediaColumns[4]},
+			},
+		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{

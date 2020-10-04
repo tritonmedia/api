@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/sirupsen/logrus"
@@ -22,8 +24,32 @@ func main() {
 	app := cli.App{
 		Name:    "api",
 		Version: app.Version,
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:    "log-format",
+				Usage:   "set the format of the logs",
+				EnvVars: []string{"LOG_FORMAT"},
+				Value:   "JSON",
+			},
+		},
 	}
 	app.Action = func(c *cli.Context) error {
+		logFormat := c.String("log-format")
+		switch strings.ToLower(logFormat) {
+		case "json":
+			logrus.SetFormatter(&logrus.JSONFormatter{})
+		case "text":
+			logrus.SetFormatter(&logrus.TextFormatter{})
+		default:
+			return fmt.Errorf("unknown log format: %s", logFormat)
+		}
+
+		// update our logger's formatter, since we created before
+		// we set it
+		log.Logger.Formatter = logrus.StandardLogger().Formatter
+
+		// start the service runner, which handles context cancellation
+		// and threading
 		r := service.NewServiceRunner(ctx, []service.Service{
 			api.NewGRPCService(),
 		})
