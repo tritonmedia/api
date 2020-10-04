@@ -73,7 +73,7 @@ func NewServiceHandler(ctx context.Context, log logrus.FieldLogger) (*GRPCServic
 
 	//nolint:govet
 	if err := db.Schema.Create(ctx); err != nil {
-		log.Fatalf("failed creating schema resources: %v", err)
+		return nil, err
 	}
 
 	endpoint, err := discovery.Find("nats")
