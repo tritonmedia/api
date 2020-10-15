@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/facebook/ent v0.4.3
-	github.com/golang/protobuf v1.4.2
+	github.com/golang/protobuf v1.4.3
 	github.com/google/uuid v1.1.2
 	github.com/jackc/pgx/v4 v4.9.0
 	github.com/nats-io/nats-server/v2 v2.1.8 // indirect
