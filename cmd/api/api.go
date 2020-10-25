@@ -20,14 +20,14 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	log := logrus.New().WithContext(ctx)
 
-	//nolint:gocritic
+	//nolint:gocritic importShadow
 	app := cli.App{
 		Name:    "api",
 		Version: app.Version,
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "log-format",
-				Usage:   "set the format of the logs",
+				Usage:   "set the formatter for logs",
 				EnvVars: []string{"LOG_FORMAT"},
 				Value:   "JSON",
 			},
