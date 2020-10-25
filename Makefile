@@ -61,7 +61,6 @@ fmt:
 	find  . -path ./vendor -prune -o -type f -name '*.go' -print | xargs ./scripts/gobin.sh golang.org/x/tools/cmd/goimports -w
 	@$(LOG) info "Running shfmt"
 	./scripts/gobin.sh mvdan.cc/sh/v3/cmd/shfmt -l -w -s .
-
 .PHONY: grpcui
 grpcui:
 	./scripts/gobin.sh github.com/fullstorydev/grpcui/cmd/grpcui -plaintext 127.0.0.1:8000

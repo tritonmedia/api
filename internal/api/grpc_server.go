@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"regexp"
 
 	"github.com/google/uuid"
 	"github.com/nats-io/stan.go"
@@ -18,6 +17,8 @@ import (
 
 	///StartBlock(imports)
 	// goimports is fucking up these imports.
+	"regexp"
+
 	"github.com/facebook/ent/dialect"
 	entsql "github.com/facebook/ent/dialect/sql"
 	"github.com/jackc/pgx/v4"
@@ -25,7 +26,10 @@ import (
 	///EndBlock(imports)
 )
 
+///StartBlock(globalVars)
 var nonAlphaNumRegex = regexp.MustCompile("[^a-zA-Z0-9]+")
+
+///EndBlock(globalVars)
 
 type GRPCServiceHandler struct {
 	log logrus.FieldLogger

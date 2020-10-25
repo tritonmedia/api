@@ -9,14 +9,12 @@ WORKDIR /src
 # hadolint ignore=DL3018
 RUN apk add --no-cache make bash git libc-dev gcc
 
-# Copy all files into our docker container.
 COPY . .
 
 # --mount here allows us to cache the packages even if
 # it's invalidated by go.mod,go.sum
 RUN --mount=type=cache,target=/go/pkg make dep
 
-# Build our application
 # --mount here allows us to save go build cache across builds
 # but also needed to use the package cache above
 RUN --mount=type=cache,target=/go-build-cache --mount=type=cache,target=/go/pkg make build APP_VERSION=${VERSION}
