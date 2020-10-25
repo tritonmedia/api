@@ -20,6 +20,7 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	log := logrus.New().WithContext(ctx)
 
+	//nolint:gocritic importShadow
 	app := cli.App{
 		Name:    "api",
 		Version: app.Version,
