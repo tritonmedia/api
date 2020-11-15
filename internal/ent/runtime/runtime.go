@@ -5,6 +5,6 @@ package runtime
 // The schema-stitching logic is generated in github.com/tritonmedia/api/internal/ent/runtime.go
 
 const (
-	Version = "v0.4.3"                                          // Version of ent codegen.
-	Sum     = "h1:ds9HENceKzpGBgCRlkZNq6TqBIegwKcF3e5reuV9Z0M=" // Sum of ent codegen.
+	Version = "v0.5.0"                                          // Version of ent codegen.
+	Sum     = "h1:NlDQDxJi1X6+20CCjRQgu8UqvRhQNm5ocPBCQYdxC/8=" // Sum of ent codegen.
 )

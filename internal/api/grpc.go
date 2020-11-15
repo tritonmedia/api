@@ -38,7 +38,7 @@ func (g *GRPCService) Run(ctx context.Context, log logrus.FieldLogger) error {
 
 	g.srv = grpc.NewServer()
 	reflection.Register(g.srv)
-	apiv1.RegisterAPIService(g.srv, apiv1.NewAPIService(h))
+	apiv1.RegisterAPIServer(g.srv, h)
 
 	// handle closing the server
 	go func() {
