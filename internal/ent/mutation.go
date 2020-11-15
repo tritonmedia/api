@@ -9,6 +9,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/tritonmedia/api/internal/ent/media"
+	"github.com/tritonmedia/api/internal/ent/predicate"
 
 	"github.com/facebook/ent"
 )
@@ -42,6 +43,7 @@ type MediaMutation struct {
 	clearedFields     map[string]struct{}
 	done              bool
 	oldValue          func(context.Context) (*Media, error)
+	predicates        []predicate.Media
 }
 
 var _ ent.Mutation = (*MediaMutation)(nil)

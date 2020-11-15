@@ -87,8 +87,8 @@ func (mq *MediaQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
 	return ids[0], nil
 }
 
-// FirstXID is like FirstID, but panics if an error occurs.
-func (mq *MediaQuery) FirstXID(ctx context.Context) uuid.UUID {
+// FirstIDX is like FirstID, but panics if an error occurs.
+func (mq *MediaQuery) FirstIDX(ctx context.Context) uuid.UUID {
 	id, err := mq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -219,6 +219,9 @@ func (mq *MediaQuery) ExistX(ctx context.Context) bool {
 // Clone returns a duplicate of the query builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
 func (mq *MediaQuery) Clone() *MediaQuery {
+	if mq == nil {
+		return nil
+	}
 	return &MediaQuery{
 		config:     mq.config,
 		limit:      mq.limit,

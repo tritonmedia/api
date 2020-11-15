@@ -16,14 +16,13 @@ import (
 // MediaUpdate is the builder for updating Media entities.
 type MediaUpdate struct {
 	config
-	hooks      []Hook
-	mutation   *MediaMutation
-	predicates []predicate.Media
+	hooks    []Hook
+	mutation *MediaMutation
 }
 
 // Where adds a new predicate for the builder.
 func (mu *MediaUpdate) Where(ps ...predicate.Media) *MediaUpdate {
-	mu.predicates = append(mu.predicates, ps...)
+	mu.mutation.predicates = append(mu.mutation.predicates, ps...)
 	return mu
 }
 
@@ -153,7 +152,7 @@ func (mu *MediaUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			},
 		},
 	}
-	if ps := mu.predicates; len(ps) > 0 {
+	if ps := mu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)

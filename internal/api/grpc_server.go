@@ -32,6 +32,7 @@ var nonAlphaNumRegex = regexp.MustCompile("[^a-zA-Z0-9]+")
 ///EndBlock(globalVars)
 
 type GRPCServiceHandler struct {
+	apiv1.UnimplementedAPIServer
 	log logrus.FieldLogger
 
 	///StartBlock(grpcConfig)
@@ -99,10 +100,10 @@ func NewServiceHandler(ctx context.Context, log logrus.FieldLogger) (*GRPCServic
 	///EndBlock(grpcInit)
 
 	return &GRPCServiceHandler{
-		log,
+		log: log,
 		///StartBlock(grpcConfigInit)
-		db,
-		sc,
+		db: db,
+		sc: sc,
 		///EndBlock(grpcConfigInit)
 	}, nil
 }
