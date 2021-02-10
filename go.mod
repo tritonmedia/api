@@ -3,7 +3,7 @@ module github.com/tritonmedia/api
 go 1.15
 
 require (
-	github.com/facebook/ent v0.5.0
+	github.com/facebook/ent v0.6.0
 	github.com/golang/protobuf v1.4.3
 	github.com/google/uuid v1.1.2
 	github.com/jackc/pgx/v4 v4.9.2
